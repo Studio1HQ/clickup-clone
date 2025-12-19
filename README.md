@@ -306,3 +306,123 @@ For issues and questions:
 ---
 
 Built with ❤️ using React, TypeScript, and modern web technologies.
+
+## Tools Used
+
+- Claude Code for UI
+- Velt
+
+### Prompt Used for Claude Code
+
+```txt
+
+**Prompt for AI (React app development):**
+
+I want you to help me build a **minimal, sleek project management web application** in **React** that functions like a **simplified, elegant version of ClickUp** focused on two main features:
+
+1. **Project Tracker / Task Table**
+2. **Document Editor Page (Notion-style editing)**
+
+Below are the requirements and expectations:
+
+---
+
+**Core Concept and Inspiration**
+
+ClickUp is an all-in-one project management platform that combines **task tracking, multiple views (list, table, board, Gantt, etc.), document creation/editing, collaboration, and workflow automation** into a unified workspace. It supports hierarchical organization, customizable tasks with statuses and fields, and real-time document editing. ([ClickUp][1])
+
+Your task is **not to build every ClickUp feature**, but to **replicate the essential experience** of tracking projects and editing documents with great UI/UX.
+
+---
+
+**Feature Set**
+
+**1. Project Tracker / Table View**
+
+The app should include:
+
+* A **project/task tracker component** that looks clean and minimal.
+* A **table view** showing tasks with columns such as:
+
+  * Task title
+  * Status (e.g., To Do, In Progress, Done)
+  * Priority
+  * Due Date
+  * Assignee(s)
+  * Tags or custom fields
+* The table should allow:
+
+  * Sorting and filtering
+  * Adding, editing, deleting tasks inline
+  * Drag-and-drop reordering of rows
+* Support custom field types (text, date, select).
+* Visual distinction between statuses and priorities.
+* The UI should resemble a modern project table (in ClickUp style) but simpler and more intuitive. ([ClickUp][2])
+
+**2. Document Editor Page**
+
+* A **rich-text document editor** similar to Notion but minimal:
+
+  * Support for headings, paragraphs, bullet lists, checklists, code blocks, and tables.
+  * Nested pages or sections.
+  * Ability to **link tasks** to documents (e.g., highlight text and link to a task ID).
+  * Real-time editing is ideal but basic save/auto-save is acceptable.
+  * Keep the UI clean, distraction-free, and intuitive, similar to Notion or ClickUp Docs. ([ClickUp][3])
+
+---
+
+**Design Guidelines**
+
+* Follow a **minimal design system** with modern UI components (e.g., similar to Notion/ClickUp aesthetic but simpler).
+* Clean color palette, clear typography, responsive layout.
+* Use reusable components (buttons, inputs, tables, modals).
+* Focus on usability and performance.
+* Smooth interactions (hover states, transitions).
+
+---
+
+**Technical Requirements**
+
+* Use **React** with functional components and **hooks**.
+* Use a UI library like **Tailwind CSS, Material UI, or similar**, but custom styling is fine if aligned with the minimal aesthetic.
+* Use **React Router** for navigation between pages (e.g., Dashboard/Table view, Documents).
+* Use **state management** with Context API or a lightweight state library (Recoil, Zustand, etc.).
+* For the document editor, integrate a rich-text editor library such as **Slate.js, ProseMirror, TipTap, or Draft.js**.
+* Persist data locally (local storage) or mock a backend (optional: provide REST API schema).
+* Ensure the app is responsive and mobile-friendly.
+
+---
+
+**UX Workflow Examples**
+
+* The main page opens to a **Project Tracker** showing a list of tasks in a table.
+* Users can click a task row to open a side panel with **task details** and custom fields.
+* Users can **create/edit documents** with a rich editor and link tasks in text.
+* Users can switch between views like Table and Document using a sidebar.
+
+---
+
+**Deliverables**
+
+1. **React project template** with folder structure and routing.
+2. **Task management UI** with table view and data interaction.
+3. **Document editing page** with rich-text editor and placeholder content.
+4. Sample data and instructions to run locally (React + any mock API).
+5. A brief UI/UX description of components and styling choices.
+
+---
+```
+
+## Screenshots
+
+### Initial Coding Phase
+
+<img width="2940" height="1912" alt="1763642568232-SCR-20251120-pddt" src="https://github.com/user-attachments/assets/d0a5aba2-33e3-4160-91a3-e3d5919c9d7e" />
+
+### During
+
+<img width="2940" height="1912" alt="1763642568231-SCR-20251120-pdpk" src="https://github.com/user-attachments/assets/00fde421-aefc-4a50-95ad-ca13ede1799b" />
+
+<img width="2940" height="1912" alt="SCR-20251120-rmni" src="https://github.com/user-attachments/assets/6dec26af-b64c-43f4-9f89-df4a27e14193" />
+
+
