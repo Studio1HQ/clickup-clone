@@ -29,6 +29,7 @@ import {
   X,
 } from 'lucide-react';
 import { format } from 'date-fns';
+import { VeltInlineCommentsSection } from '@veltdev/react';
 
 interface TaskModalProps {
   task: Task | null;
@@ -52,7 +53,6 @@ const priorityColors: Record<TaskPriority, string> = {
 
 export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => {
   const [newSubtask, setNewSubtask] = useState('');
-  const [newComment, setNewComment] = useState('');
 
   if (!task) return null;
 
@@ -60,12 +60,6 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
     if (!newSubtask.trim()) return;
     // In a real app, this would update the task
     setNewSubtask('');
-  };
-
-  const handleAddComment = () => {
-    if (!newComment.trim()) return;
-    // In a real app, this would add a comment
-    setNewComment('');
   };
 
   const completedSubtasks = task.subtasks.filter((st) => st.completed).length;
@@ -150,75 +144,18 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
               </div>
             </div>
 
-            {/* Comments */}
-            <div>
+            {/* Comments - Velt Inline Comments */}
+            <div id={`task-modal-comments-${task.id}`}>
               <label className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
                 <MessageSquare className="w-4 h-4" />
-                Comments ({task.comments.length})
+                Comments
               </label>
-
-              <div className="space-y-4">
-                {task.comments.map((comment) => (
-                  <div key={comment.id} className="flex gap-3">
-                    <Avatar className="w-8 h-8">
-                      <AvatarImage src={comment.author.avatar} alt={comment.author.name} />
-                      <AvatarFallback>{comment.author.name.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1">
-                      <div className="bg-muted rounded-lg p-3">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="text-sm font-medium">{comment.author.name}</span>
-                          <span className="text-xs text-muted-foreground">
-                            {format(comment.timestamp, 'MMM d, h:mm a')}
-                          </span>
-                        </div>
-                        <p className="text-sm">{comment.text}</p>
-                      </div>
-
-                      {/* Replies */}
-                      {comment.replies.length > 0 && (
-                        <div className="ml-4 mt-2 space-y-2">
-                          {comment.replies.map((reply) => (
-                            <div key={reply.id} className="flex gap-2">
-                              <Avatar className="w-6 h-6">
-                                <AvatarImage src={reply.author.avatar} alt={reply.author.name} />
-                                <AvatarFallback>{reply.author.name.charAt(0)}</AvatarFallback>
-                              </Avatar>
-                              <div className="flex-1 bg-muted/50 rounded-lg p-2">
-                                <div className="flex items-center gap-2 mb-1">
-                                  <span className="text-xs font-medium">{reply.author.name}</span>
-                                  <span className="text-xs text-muted-foreground">
-                                    {format(reply.timestamp, 'MMM d, h:mm a')}
-                                  </span>
-                                </div>
-                                <p className="text-xs">{reply.text}</p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-
-                {/* Add Comment */}
-                <div className="flex gap-3">
-                  <Avatar className="w-8 h-8">
-                    <AvatarImage src="https://api.dicebear.com/7.x/avataaars/svg?seed=You" />
-                    <AvatarFallback>YU</AvatarFallback>
-                  </Avatar>
-                  <div className="flex-1 flex gap-2">
-                    <Input
-                      placeholder="Add a comment..."
-                      value={newComment}
-                      onChange={(e) => setNewComment(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}
-                    />
-                    <Button size="sm" onClick={handleAddComment}>
-                      Post
-                    </Button>
-                  </div>
-                </div>
+              
+              <div className="bg-muted/30 rounded-lg p-4 min-h-[150px]">
+                <VeltInlineCommentsSection
+                  targetElementId={`task-modal-comments-${task.id}`}
+                  multiThread={true}
+                />
               </div>
             </div>
           </div>

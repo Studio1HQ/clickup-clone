@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/select';
 import { ArrowUpDown, CheckCircle2, Circle } from 'lucide-react';
 import { format } from 'date-fns';
+import { VeltCommentTool, VeltCommentBubble } from '@veltdev/react';
 
 const priorityColors: Record<TaskPriority, string> = {
   urgent: 'bg-red-100 text-red-700 border-red-200',
@@ -226,6 +227,34 @@ export const TableView: React.FC = () => {
               <span className="text-xs text-muted-foreground">
                 {completed}/{subtasks.length}
               </span>
+            </div>
+          );
+        },
+      },
+      {
+        accessorKey: 'comments',
+        header: 'Comments',
+        cell: ({ row }) => {
+          const task = row.original;
+          return (
+            <div 
+              className="flex items-center gap-2"
+              id={`task-card-${task.id}`}
+              data-velt-target-comment-element-id={`task-card-${task.id}`}
+            >
+              <VeltCommentTool 
+                targetElementId={`task-card-${task.id}`}
+                context={{ 
+                  taskId: task.id,
+                  taskTitle: task.title,
+                  projectId: task.projectId,
+                  view: 'table'
+                }}
+              />
+              <VeltCommentBubble 
+                targetElementId={`task-card-${task.id}`}
+                commentCountType="total"
+              />
             </div>
           );
         },

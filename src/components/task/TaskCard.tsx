@@ -2,8 +2,9 @@ import React from 'react';
 import { Task } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Calendar, CheckCircle2, Circle, MessageSquare } from 'lucide-react';
+import { Calendar, CheckCircle2, Circle } from 'lucide-react';
 import { format } from 'date-fns';
+import { VeltCommentTool, VeltCommentBubble } from '@veltdev/react';
 
 interface TaskCardProps {
   task: Task;
@@ -31,8 +32,18 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
   return (
     <div
       onClick={onClick}
-      className="bg-white border border-border rounded-lg p-4 hover:shadow-md transition-all cursor-pointer group"
+      id={`task-card-${task.id}`}
+      data-velt-target-comment-element-id={`task-card-${task.id}`}
+      className="bg-white border border-border rounded-lg p-4 hover:shadow-md transition-all cursor-pointer group relative"
     >
+      {/* Comment Bubble - shows when task has comments */}
+      <div className="absolute -top-1 -right-1 z-10">
+        <VeltCommentBubble 
+          targetElementId={`task-card-${task.id}`}
+          commentCountType="total"
+        />
+      </div>
+      
       {/* Status & Title */}
       <div className="flex items-start gap-3 mb-3">
         <div className="mt-0.5">{statusIcons[task.status]}</div>
@@ -78,13 +89,18 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
             </span>
           )}
 
-          {/* Comments */}
-          {task.comments.length > 0 && (
-            <span className="flex items-center gap-1 text-muted-foreground">
-              <MessageSquare className="w-3 h-3" />
-              {task.comments.length}
-            </span>
-          )}
+          {/* Velt Comment Tool */}
+          <div onClick={(e) => e.stopPropagation()}>
+            <VeltCommentTool 
+              targetElementId={`task-card-${task.id}`}
+              context={{ 
+                taskId: task.id,
+                taskTitle: task.title,
+                projectId: task.projectId,
+                view: 'list'
+              }}
+            />
+          </div>
 
           {/* Due Date */}
           {task.dueDate && (
