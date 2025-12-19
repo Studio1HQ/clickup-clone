@@ -1,10 +1,29 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { AppContextType, ViewType, Project, Task } from '@/types';
+import { VeltUser } from '@/types/veltUser';
 import { mockProjects, mockTasks, activeUsers } from '@/data/mockData';
 
-const AppContext = createContext<AppContextType | undefined>(undefined);
+interface ExtendedAppContextType extends AppContextType {
+  currentVeltUser: VeltUser;
+  staticVeltUsers: VeltUser[];
+  onSwitchVeltUser: (user: VeltUser) => void;
+}
 
-export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+const AppContext = createContext<ExtendedAppContextType | undefined>(undefined);
+
+interface AppProviderProps {
+  children: ReactNode;
+  currentUser: VeltUser;
+  staticUsers: VeltUser[];
+  onSwitchUser: (user: VeltUser) => void;
+}
+
+export const AppProvider: React.FC<AppProviderProps> = ({ 
+  children, 
+  currentUser, 
+  staticUsers, 
+  onSwitchUser 
+}) => {
   const [currentView, setCurrentView] = useState<ViewType>('list');
   const [currentProject, setCurrentProject] = useState<Project | null>(mockProjects[0]);
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
@@ -21,6 +40,9 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
         setTasks,
         projects,
         activeUsers,
+        currentVeltUser: currentUser,
+        staticVeltUsers: staticUsers,
+        onSwitchVeltUser: onSwitchUser,
       }}
     >
       {children}

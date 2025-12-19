@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useApp } from '@/contexts/AppContext';
-import { Search, Share2, Bell, Users } from 'lucide-react';
+import { Search, Share2, Bell, ChevronDown } from 'lucide-react';
+import { VeltPresence } from '@veltdev/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { AvatarStack } from '@/components/collaborative/AvatarStack';
-import { PresenceIndicator } from '@/components/collaborative/PresenceIndicator';
 import { Badge } from '@/components/ui/badge';
 
 export const HeaderBar: React.FC = () => {
-  const { currentProject, activeUsers, currentView } = useApp();
+  const { currentProject, currentView, currentVeltUser, staticVeltUsers, onSwitchVeltUser } = useApp();
+  const [showUserDropdown, setShowUserDropdown] = useState(false);
+  const userDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(event.target as Node)) {
+        setShowUserDropdown(false);
+      }
+    };
+
+    if (showUserDropdown) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [showUserDropdown]);
 
   const viewLabels: Record<string, string> = {
     list: 'List View',
@@ -32,10 +50,6 @@ export const HeaderBar: React.FC = () => {
                     <Badge variant="secondary" className="text-xs">
                       {viewLabels[currentView]}
                     </Badge>
-                    <span className="text-xs text-muted-foreground flex items-center gap-1">
-                      <Users className="w-3 h-3" />
-                      {activeUsers.filter(u => u.status === 'active').length} active
-                    </span>
                   </div>
                 </div>
               </>
@@ -55,8 +69,58 @@ export const HeaderBar: React.FC = () => {
 
             {/* Collaborative UI */}
             <div className="flex items-center gap-3 border-l border-border pl-3">
-              <PresenceIndicator users={activeUsers} />
-              <AvatarStack users={activeUsers} max={5} />
+              {/* Velt Presence */}
+              <VeltPresence />
+              
+              {/* User Switcher */}
+              <div ref={userDropdownRef} className="relative">
+                <button
+                  onClick={() => setShowUserDropdown(!showUserDropdown)}
+                  className="flex items-center gap-2 px-3 py-1.5 hover:bg-gray-100 rounded transition-colors"
+                >
+                  <img
+                    src={currentVeltUser.photoUrl}
+                    alt={currentVeltUser.name}
+                    className="w-7 h-7 rounded-full"
+                  />
+                  <span className="text-sm font-medium">{currentVeltUser.name}</span>
+                  <ChevronDown className="w-4 h-4" />
+                </button>
+
+                {showUserDropdown && (
+                  <div className="absolute right-0 top-full mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-gray-200">
+                      <p className="text-xs text-gray-500 font-medium">Switch User</p>
+                    </div>
+                    {staticVeltUsers.map((user) => (
+                      <button
+                        key={user.userId}
+                        onClick={() => {
+                          onSwitchVeltUser(user);
+                          setShowUserDropdown(false);
+                        }}
+                        className={`w-full flex items-center gap-3 px-4 py-2 hover:bg-gray-50 transition-colors ${
+                          user.userId === currentVeltUser.userId ? 'bg-indigo-50' : ''
+                        }`}
+                      >
+                        <img
+                          src={user.photoUrl}
+                          alt={user.name}
+                          className="w-9 h-9 rounded-full"
+                        />
+                        <div className="flex-1 text-left">
+                          <p className="text-sm font-medium text-gray-900">{user.name}</p>
+                          <p className="text-xs text-gray-500">{user.email}</p>
+                        </div>
+                        {user.userId === currentVeltUser.userId && (
+                          <div className="w-2 h-2 bg-indigo-600 rounded-full"></div>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+              
               <Button variant="ghost" size="icon">
                 <Bell className="w-4 h-4" />
               </Button>
