@@ -426,3 +426,9 @@ The app should include:
 <img width="2940" height="1912" alt="SCR-20251120-rmni" src="https://github.com/user-attachments/assets/6dec26af-b64c-43f4-9f89-df4a27e14193" />
 
 
+
+## Velt features added
+- Presence
+- Comments
+  - Inline
+  - Popover
