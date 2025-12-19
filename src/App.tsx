@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { VeltProvider, useVeltClient } from '@veltdev/react'
+import { VeltProvider, useVeltClient, VeltComments } from '@veltdev/react'
 import { AppProvider } from '@/contexts/AppContext'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Toaster } from '@/components/ui/sonner'
@@ -62,6 +62,10 @@ function AppContent({
 
   return (
     <AppProvider currentUser={currentUser} staticUsers={staticUsers} onSwitchUser={onSwitchUser}>
+      <VeltComments 
+        popoverMode={true} 
+        popoverTriangleComponent={true}
+      />
       <AppLayout />
       <Toaster />
     </AppProvider>

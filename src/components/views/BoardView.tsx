@@ -5,8 +5,9 @@ import { Task, TaskStatus } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Plus, MoreVertical, Calendar, MessageSquare, CheckCircle2 } from 'lucide-react';
+import { Plus, MoreVertical, Calendar, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
+import { VeltCommentTool, VeltCommentBubble } from '@veltdev/react';
 
 const statusColumns: { id: TaskStatus; label: string; color: string }[] = [
   { id: 'todo', label: 'To Do', color: 'bg-gray-100' },
@@ -99,10 +100,20 @@ export const BoardView: React.FC = () => {
                               ref={provided.innerRef}
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
-                              className={`bg-white rounded-lg border border-border p-3 cursor-pointer hover:shadow-md transition-shadow ${
+                              id={`task-card-${task.id}`}
+                              data-velt-target-comment-element-id={`task-card-${task.id}`}
+                              className={`bg-white rounded-lg border border-border p-3 cursor-pointer hover:shadow-md transition-shadow relative ${
                                 snapshot.isDragging ? 'shadow-lg rotate-2' : ''
                               }`}
                             >
+                              {/* Comment Bubble - shows when task has comments */}
+                              <div className="absolute -top-1 -right-1 z-10">
+                                <VeltCommentBubble 
+                                  targetElementId={`task-card-${task.id}`}
+                                  commentCountType="total"
+                                />
+                              </div>
+                              
                               {/* Priority Indicator */}
                               <div className="flex items-start gap-2 mb-2">
                                 <div
@@ -148,12 +159,16 @@ export const BoardView: React.FC = () => {
                                       {task.subtasks.length}
                                     </span>
                                   )}
-                                  {task.comments.length > 0 && (
-                                    <span className="flex items-center gap-1 text-muted-foreground">
-                                      <MessageSquare className="w-3 h-3" />
-                                      {task.comments.length}
-                                    </span>
-                                  )}
+                                  {/* Velt Comment Tool */}
+                                  <VeltCommentTool 
+                                    targetElementId={`task-card-${task.id}`}
+                                    context={{ 
+                                      taskId: task.id,
+                                      taskTitle: task.title,
+                                      projectId: task.projectId,
+                                      view: 'board'
+                                    }}
+                                  />
                                   {task.dueDate && (
                                     <span className="flex items-center gap-1 text-muted-foreground">
                                       <Calendar className="w-3 h-3" />
