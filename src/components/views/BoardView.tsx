@@ -7,7 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Plus, MoreVertical, Calendar, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
-import { VeltCommentTool, VeltCommentBubble } from '@veltdev/react';
+import { VeltCommentBubble } from '@veltdev/react';
 
 const statusColumns: { id: TaskStatus; label: string; color: string }[] = [
   { id: 'todo', label: 'To Do', color: 'bg-gray-100' },
@@ -106,9 +106,12 @@ export const BoardView: React.FC = () => {
                                 snapshot.isDragging ? 'shadow-lg rotate-2' : ''
                               }`}
                             >
-                              {/* Comment Bubble - shows when task has comments */}
-                              <div className="absolute -top-1 -right-1 z-10">
-                                <VeltCommentBubble 
+                              {/* Comment Bubble - single visual for card/board views */}
+                              <div
+                                className="absolute top-2 right-2 z-10"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <VeltCommentBubble
                                   targetElementId={`task-card-${task.id}`}
                                   commentCountType="total"
                                 />
@@ -159,16 +162,7 @@ export const BoardView: React.FC = () => {
                                       {task.subtasks.length}
                                     </span>
                                   )}
-                                  {/* Velt Comment Tool */}
-                                  <VeltCommentTool 
-                                    targetElementId={`task-card-${task.id}`}
-                                    context={{ 
-                                      taskId: task.id,
-                                      taskTitle: task.title,
-                                      projectId: task.projectId,
-                                      view: 'board'
-                                    }}
-                                  />
+                                  {/* Comment tool intentionally omitted on board cards to avoid duplicate visuals */}
                                   {task.dueDate && (
                                     <span className="flex items-center gap-1 text-muted-foreground">
                                       <Calendar className="w-3 h-3" />

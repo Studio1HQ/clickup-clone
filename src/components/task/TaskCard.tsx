@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, CheckCircle2, Circle } from 'lucide-react';
 import { format } from 'date-fns';
-import { VeltCommentTool, VeltCommentBubble } from '@veltdev/react';
+import { VeltCommentBubble } from '@veltdev/react';
 
 interface TaskCardProps {
   task: Task;
@@ -36,9 +36,12 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
       data-velt-target-comment-element-id={`task-card-${task.id}`}
       className="bg-white border border-border rounded-lg p-4 hover:shadow-md transition-all cursor-pointer group relative"
     >
-      {/* Comment Bubble - shows when task has comments */}
-      <div className="absolute -top-1 -right-1 z-10">
-        <VeltCommentBubble 
+      {/* Comment Bubble - shows when task has comments (single visual) */}
+      <div
+        className="absolute top-2 right-2 z-10"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <VeltCommentBubble
           targetElementId={`task-card-${task.id}`}
           commentCountType="total"
         />
@@ -89,18 +92,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
             </span>
           )}
 
-          {/* Velt Comment Tool */}
-          <div onClick={(e) => e.stopPropagation()}>
-            <VeltCommentTool 
-              targetElementId={`task-card-${task.id}`}
-              context={{ 
-                taskId: task.id,
-                taskTitle: task.title,
-                projectId: task.projectId,
-                view: 'list'
-              }}
-            />
-          </div>
+          {/* Note: only bubble is shown on card/list views to avoid duplicate visuals */}
 
           {/* Due Date */}
           {task.dueDate && (
