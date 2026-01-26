@@ -30,10 +30,17 @@ export const AppProvider: React.FC<AppProviderProps> = ({
   const [currentProject, setCurrentProject] = useState<Project | null>(mockProjects[0]);
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
   const [projects] = useState<Project[]>(mockProjects);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(() => {
+    const saved = localStorage.getItem('clickup-theme');
+    return saved === 'dark';
+  });
 
   const toggleTheme = () => {
-    setIsDarkMode((prev) => !prev);
+    setIsDarkMode((prev) => {
+      const newValue = !prev;
+      localStorage.setItem('clickup-theme', newValue ? 'dark' : 'light');
+      return newValue;
+    });
   };
 
   return (

@@ -30,7 +30,7 @@ interface AppContentProps {
 }
 
 function AppContentInner() {
-  const { isDarkMode } = useApp();
+  const { isDarkMode, currentView } = useApp();
 
   // Apply dark mode class to html element
   useEffect(() => {
@@ -43,11 +43,13 @@ function AppContentInner() {
 
   return (
     <>
-      <VeltComments
-        popoverMode={true}
-        popoverTriangleComponent={true}
-        darkMode={isDarkMode}
-      />
+      {currentView !== 'document' && (
+        <VeltComments
+          popoverMode={true}
+          popoverTriangleComponent={true}
+          darkMode={isDarkMode}
+        />
+      )}
       <AppLayout />
       <Toaster />
     </>
