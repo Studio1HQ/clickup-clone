@@ -34,10 +34,10 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
       onClick={onClick}
       id={`task-card-${task.id}`}
       data-velt-target-comment-element-id={`task-card-${task.id}`}
-      className="bg-white border border-border rounded-lg p-4 hover:shadow-md transition-all cursor-pointer group relative"
+      className="bg-white dark:bg-gray-700 border border-border dark:border-gray-600 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer group relative"
     >
       {/* Comment Bubble - shows when task has comments (single visual) */}
-      <div
+      {/* <div
         className="absolute top-2 right-2 z-10"
         onClick={(e) => e.stopPropagation()}
       >
@@ -45,17 +45,17 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
           targetElementId={`task-card-${task.id}`}
           commentCountType="total"
         />
-      </div>
+      </div> */}
       
       {/* Status & Title */}
       <div className="flex items-start gap-3 mb-3">
         <div className="mt-0.5">{statusIcons[task.status]}</div>
         <div className="flex-1 min-w-0">
-          <h3 className="font-medium text-sm text-foreground group-hover:text-primary transition-colors">
+          <h3 className="font-medium text-sm text-foreground dark:text-white group-hover:text-primary transition-colors">
             {task.title}
           </h3>
           {task.description && (
-            <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
+            <p className="text-xs text-muted-foreground dark:text-gray-300 mt-1 line-clamp-2">
               {task.description}
             </p>
           )}
@@ -86,7 +86,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
 
           {/* Subtasks */}
           {totalSubtasks > 0 && (
-            <span className="flex items-center gap-1 text-muted-foreground">
+            <span className="flex items-center gap-1 text-muted-foreground dark:text-gray-300">
               <CheckCircle2 className="w-3 h-3" />
               {completedSubtasks}/{totalSubtasks}
             </span>
@@ -96,7 +96,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
 
           {/* Due Date */}
           {task.dueDate && (
-            <span className="flex items-center gap-1 text-muted-foreground">
+            <span className="flex items-center gap-1 text-muted-foreground dark:text-gray-300">
               <Calendar className="w-3 h-3" />
               {format(task.dueDate, 'MMM d')}
             </span>

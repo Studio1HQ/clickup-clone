@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { VeltProvider, useVeltClient, VeltComments } from '@veltdev/react'
-import { AppProvider } from '@/contexts/AppContext'
+import { AppProvider, useApp } from '@/contexts/AppContext'
 import { AppLayout } from '@/components/layout/AppLayout'
 import { Toaster } from '@/components/ui/sonner'
 import { VeltUser } from '@/types/veltUser'
@@ -27,6 +27,31 @@ interface AppContentProps {
   currentUser: VeltUser;
   staticUsers: VeltUser[];
   onSwitchUser: (user: VeltUser) => void;
+}
+
+function AppContentInner() {
+  const { isDarkMode } = useApp();
+
+  // Apply dark mode class to html element
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
+  return (
+    <>
+      <VeltComments
+        popoverMode={true}
+        popoverTriangleComponent={true}
+        darkMode={isDarkMode}
+      />
+      <AppLayout />
+      <Toaster />
+    </>
+  );
 }
 
 function AppContent({
@@ -62,14 +87,9 @@ function AppContent({
 
   return (
     <AppProvider currentUser={currentUser} staticUsers={staticUsers} onSwitchUser={onSwitchUser}>
-      <VeltComments 
-        popoverMode={true} 
-        popoverTriangleComponent={true}
-      />
-      <AppLayout />
-      <Toaster />
+      <AppContentInner />
     </AppProvider>
-  )
+  );
 }
 
 function App() {

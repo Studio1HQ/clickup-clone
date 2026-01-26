@@ -6,7 +6,7 @@ import '@blocknote/mantine/style.css';
 import { useApp } from '@/contexts/AppContext';
 
 export const DocumentView: React.FC = () => {
-  const { currentProject } = useApp();
+  const { currentProject, isDarkMode } = useApp();
 
   const initialContent = useMemo(
     () => [
@@ -93,9 +93,9 @@ export const DocumentView: React.FC = () => {
   });
 
   return (
-    <div className="h-full overflow-auto bg-white">
+    <div className="h-full overflow-auto bg-white dark:bg-gray-900">
       <div className="max-w-4xl mx-auto py-8 px-6">
-        <BlockNoteView editor={editor} theme="light" />
+        <BlockNoteView editor={editor} theme={isDarkMode ? 'dark' : 'light'} />
       </div>
     </div>
   );

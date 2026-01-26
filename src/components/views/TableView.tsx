@@ -110,9 +110,9 @@ export const TableView: React.FC = () => {
           const task = row.original;
           return (
             <div>
-              <div className="font-medium text-sm">{task.title}</div>
+              <div className="font-medium text-sm dark:text-white">{task.title}</div>
               {task.description && (
-                <div className="text-xs text-muted-foreground line-clamp-1">
+                <div className="text-xs text-muted-foreground dark:text-gray-400 line-clamp-1">
                   {task.description}
                 </div>
               )}
@@ -155,14 +155,14 @@ export const TableView: React.FC = () => {
         header: 'Assignee',
         cell: ({ row }) => {
           const assignee = row.original.assignee;
-          if (!assignee) return <span className="text-xs text-muted-foreground">Unassigned</span>;
+          if (!assignee) return <span className="text-xs text-muted-foreground dark:text-gray-400">Unassigned</span>;
           return (
             <div className="flex items-center gap-2">
               <Avatar className="w-6 h-6">
                 <AvatarImage src={assignee.avatar} alt={assignee.name} />
                 <AvatarFallback className="text-xs">{assignee.name.charAt(0)}</AvatarFallback>
               </Avatar>
-              <span className="text-sm">{assignee.name}</span>
+              <span className="text-sm dark:text-gray-200">{assignee.name}</span>
             </div>
           );
         },
@@ -182,8 +182,8 @@ export const TableView: React.FC = () => {
         },
         cell: ({ row }) => {
           const dueDate = row.original.dueDate;
-          if (!dueDate) return <span className="text-xs text-muted-foreground">No date</span>;
-          return <span className="text-sm">{format(dueDate, 'MMM d, yyyy')}</span>;
+          if (!dueDate) return <span className="text-xs text-muted-foreground dark:text-gray-400">No date</span>;
+          return <span className="text-sm dark:text-gray-200">{format(dueDate, 'MMM d, yyyy')}</span>;
         },
       },
       {
@@ -218,13 +218,13 @@ export const TableView: React.FC = () => {
           const percentage = Math.round((completed / subtasks.length) * 100);
           return (
             <div className="flex items-center gap-2">
-              <div className="flex-1 bg-gray-200 rounded-full h-2 max-w-[100px]">
+              <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-2 max-w-[100px]">
                 <div
-                  className="bg-green-500 h-2 rounded-full transition-all"
+                  className="bg-green-500 dark:bg-green-400 h-2 rounded-full transition-all"
                   style={{ width: `${percentage}%` }}
                 />
               </div>
-              <span className="text-xs text-muted-foreground">
+              <span className="text-xs text-muted-foreground dark:text-gray-400">
                 {completed}/{subtasks.length}
               </span>
             </div>
@@ -238,7 +238,7 @@ export const TableView: React.FC = () => {
           const task = row.original;
           return (
             <div
-              className="flex items-center gap-2"
+              className="absolute inset-0 flex items-center px-4"
               id={`task-card-${task.id}`}
               data-velt-target-comment-element-id={`task-card-${task.id}`}
             >
@@ -274,16 +274,16 @@ export const TableView: React.FC = () => {
 
   return (
     <div className="h-full overflow-auto p-6">
-      <div className="bg-white rounded-lg border border-border overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-border dark:border-gray-700 overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-muted/50 border-b border-border">
+            <thead className="bg-muted/50 dark:bg-gray-900/50 border-b border-border dark:border-gray-700">
               {table.getHeaderGroups().map((headerGroup) => (
                 <tr key={headerGroup.id}>
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider"
+                      className="px-4 py-3 text-left text-xs font-semibold text-muted-foreground dark:text-gray-400 uppercase tracking-wider"
                     >
                       {header.isPlaceholder
                         ? null
@@ -293,14 +293,17 @@ export const TableView: React.FC = () => {
                 </tr>
               ))}
             </thead>
-            <tbody className="divide-y divide-border">
+            <tbody className="divide-y divide-border dark:divide-gray-700">
               {table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className="hover:bg-muted/30 transition-colors cursor-pointer"
+                  className="hover:bg-muted/30 dark:hover:bg-gray-700/30 transition-colors cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <td key={cell.id} className="px-4 py-3 text-sm">
+                    <td
+                      key={cell.id}
+                      className={`px-4 py-3 text-sm ${cell.column.id === 'comments' ? 'relative' : ''}`}
+                    >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
                   ))}
