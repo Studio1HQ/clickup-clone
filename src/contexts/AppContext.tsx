@@ -7,6 +7,8 @@ interface ExtendedAppContextType extends AppContextType {
   currentVeltUser: VeltUser;
   staticVeltUsers: VeltUser[];
   onSwitchVeltUser: (user: VeltUser) => void;
+  isDarkMode: boolean;
+  toggleTheme: () => void;
 }
 
 const AppContext = createContext<ExtendedAppContextType | undefined>(undefined);
@@ -18,16 +20,21 @@ interface AppProviderProps {
   onSwitchUser: (user: VeltUser) => void;
 }
 
-export const AppProvider: React.FC<AppProviderProps> = ({ 
-  children, 
-  currentUser, 
-  staticUsers, 
-  onSwitchUser 
+export const AppProvider: React.FC<AppProviderProps> = ({
+  children,
+  currentUser,
+  staticUsers,
+  onSwitchUser
 }) => {
   const [currentView, setCurrentView] = useState<ViewType>('list');
   const [currentProject, setCurrentProject] = useState<Project | null>(mockProjects[0]);
   const [tasks, setTasks] = useState<Task[]>(mockTasks);
   const [projects] = useState<Project[]>(mockProjects);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setIsDarkMode((prev) => !prev);
+  };
 
   return (
     <AppContext.Provider
@@ -43,6 +50,8 @@ export const AppProvider: React.FC<AppProviderProps> = ({
         currentVeltUser: currentUser,
         staticVeltUsers: staticUsers,
         onSwitchVeltUser: onSwitchUser,
+        isDarkMode,
+        toggleTheme,
       }}
     >
       {children}

@@ -62,7 +62,7 @@ export const BoardView: React.FC = () => {
   };
 
   return (
-    <div className="h-full overflow-x-auto p-6 bg-gray-50">
+    <div className="h-full overflow-x-auto p-6 bg-gray-50 dark:bg-gray-900">
       <DragDropContext onDragEnd={handleDragEnd}>
         <div className="flex gap-4 min-w-max">
           {statusColumns.map((column) => (
@@ -71,7 +71,7 @@ export const BoardView: React.FC = () => {
               <div className="mb-3">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
-                    <h3 className="font-semibold text-sm">{column.label}</h3>
+                    <h3 className="font-semibold text-sm dark:text-white">{column.label}</h3>
                     <Badge variant="secondary" className="text-xs">
                       {columnTasks[column.id].length}
                     </Badge>
@@ -89,7 +89,7 @@ export const BoardView: React.FC = () => {
                     ref={provided.innerRef}
                     {...provided.droppableProps}
                     className={`min-h-[500px] rounded-lg p-2 transition-colors ${
-                      snapshot.isDraggingOver ? 'bg-blue-50' : column.color
+                      snapshot.isDraggingOver ? 'bg-blue-50 dark:bg-blue-900/30' : `${column.color} dark:bg-gray-800`
                     }`}
                   >
                     <div className="space-y-2">
@@ -102,12 +102,12 @@ export const BoardView: React.FC = () => {
                               {...provided.dragHandleProps}
                               id={`task-card-${task.id}`}
                               data-velt-target-comment-element-id={`task-card-${task.id}`}
-                              className={`bg-white rounded-lg border border-border p-3 cursor-pointer hover:shadow-md transition-shadow relative ${
+                              className={`bg-white dark:bg-gray-700 rounded-lg border border-border dark:border-gray-600 p-3 cursor-pointer hover:shadow-md transition-shadow relative ${
                                 snapshot.isDragging ? 'shadow-lg rotate-2' : ''
                               }`}
                             >
                               {/* Comment Bubble - single visual for card/board views */}
-                              <div
+                              {/* <div
                                 className="absolute top-2 right-2 z-10"
                                 onClick={(e) => e.stopPropagation()}
                               >
@@ -115,7 +115,7 @@ export const BoardView: React.FC = () => {
                                   targetElementId={`task-card-${task.id}`}
                                   commentCountType="total"
                                 />
-                              </div>
+                              </div> */}
                               
                               {/* Priority Indicator */}
                               <div className="flex items-start gap-2 mb-2">
@@ -125,11 +125,11 @@ export const BoardView: React.FC = () => {
                                   }`}
                                 />
                                 <div className="flex-1 min-w-0">
-                                  <h4 className="font-medium text-sm text-foreground mb-1">
+                                  <h4 className="font-medium text-sm text-foreground dark:text-white mb-1">
                                     {task.title}
                                   </h4>
                                   {task.description && (
-                                    <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+                                    <p className="text-xs text-muted-foreground dark:text-gray-300 line-clamp-2 mb-2">
                                       {task.description}
                                     </p>
                                   )}
@@ -156,7 +156,7 @@ export const BoardView: React.FC = () => {
                               <div className="flex items-center justify-between text-xs">
                                 <div className="flex items-center gap-2">
                                   {task.subtasks.length > 0 && (
-                                    <span className="flex items-center gap-1 text-muted-foreground">
+                                    <span className="flex items-center gap-1 text-muted-foreground dark:text-gray-300">
                                       <CheckCircle2 className="w-3 h-3" />
                                       {task.subtasks.filter((st) => st.completed).length}/
                                       {task.subtasks.length}
@@ -164,7 +164,7 @@ export const BoardView: React.FC = () => {
                                   )}
                                   {/* Comment tool intentionally omitted on board cards to avoid duplicate visuals */}
                                   {task.dueDate && (
-                                    <span className="flex items-center gap-1 text-muted-foreground">
+                                    <span className="flex items-center gap-1 text-muted-foreground dark:text-gray-300">
                                       <Calendar className="w-3 h-3" />
                                       {format(task.dueDate, 'MMM d')}
                                     </span>

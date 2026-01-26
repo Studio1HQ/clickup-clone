@@ -64,7 +64,7 @@ export const ListView: React.FC = () => {
             const isCollapsed = collapsedGroups.has(status);
 
             return (
-              <div key={status} className="bg-gray-50 rounded-lg p-4">
+              <div key={status} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
                 {/* Group Header */}
                 <div className="flex items-center justify-between mb-4">
                   <button
@@ -72,12 +72,12 @@ export const ListView: React.FC = () => {
                     className="flex items-center gap-2 hover:opacity-70 transition-opacity"
                   >
                     {isCollapsed ? (
-                      <ChevronRight className="w-4 h-4 text-muted-foreground" />
+                      <ChevronRight className="w-4 h-4 text-muted-foreground dark:text-gray-400" />
                     ) : (
-                      <ChevronDown className="w-4 h-4 text-muted-foreground" />
+                      <ChevronDown className="w-4 h-4 text-muted-foreground dark:text-gray-400" />
                     )}
                     <div className="flex items-center gap-2">
-                      <h2 className="font-semibold text-sm">{statusLabels[status]}</h2>
+                      <h2 className="font-semibold text-sm dark:text-white">{statusLabels[status]}</h2>
                       <span
                         className={`px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[status]}`}
                       >
@@ -95,7 +95,7 @@ export const ListView: React.FC = () => {
                 {!isCollapsed && (
                   <div className="space-y-2">
                     {tasksInGroup.length === 0 ? (
-                      <div className="text-center py-8 text-muted-foreground text-sm">
+                      <div className="text-center py-8 text-muted-foreground dark:text-gray-400 text-sm">
                         No tasks in this status
                       </div>
                     ) : (
