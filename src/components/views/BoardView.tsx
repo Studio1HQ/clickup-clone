@@ -7,7 +7,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Plus, MoreVertical, Calendar, CheckCircle2 } from 'lucide-react';
 import { format } from 'date-fns';
-import { VeltCommentBubble } from '@veltdev/react';
 
 const statusColumns: { id: TaskStatus; label: string; color: string }[] = [
   { id: 'todo', label: 'To Do', color: 'bg-gray-100' },

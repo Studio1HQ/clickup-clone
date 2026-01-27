@@ -4,7 +4,6 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, CheckCircle2, Circle } from 'lucide-react';
 import { format } from 'date-fns';
-import { VeltCommentBubble } from '@veltdev/react';
 
 interface TaskCardProps {
   task: Task;
