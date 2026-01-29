@@ -66,14 +66,14 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="!max-w-[1400px] w-[55vw] max-h-[90vh] overflow-y-auto p-6 sm:p-8">
         {/* Header */}
-        <DialogHeader>
+        <DialogHeader className="pr-8">
           <div className="flex items-start gap-3">
-            <Circle className="w-5 h-5 text-muted-foreground mt-1" />
-            <div className="flex-1">
-              <DialogTitle className="text-xl">{task.title}</DialogTitle>
-              <div className="flex items-center gap-2 mt-2">
+            <Circle className="w-5 h-5 text-muted-foreground mt-1 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <DialogTitle className="text-xl break-words">{task.title}</DialogTitle>
+              <div className="flex items-center gap-2 mt-2 flex-wrap">
                 <Badge variant="secondary" className="text-xs">
                   {task.projectId}
                 </Badge>
@@ -86,9 +86,9 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
         </DialogHeader>
 
         {/* Main Content */}
-        <div className="grid grid-cols-3 gap-6 mt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8 mt-6">
           {/* Left Column - Main Content */}
-          <div className="col-span-2 space-y-6">
+          <div className="lg:col-span-2 space-y-6 order-2 lg:order-1">
             {/* Description */}
             <div>
               <label className="text-sm font-medium text-muted-foreground mb-2 block">
@@ -98,10 +98,10 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
             </div>
 
             {/* Subtasks */}
-            <div>
+            <div className="min-w-0">
               <div className="flex items-center justify-between mb-3">
                 <label className="text-sm font-medium text-muted-foreground flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4" />
+                  <CheckCircle2 className="w-4 h-4 shrink-0" />
                   Subtasks ({completedSubtasks}/{task.subtasks.length})
                 </label>
               </div>
@@ -110,16 +110,16 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
                 {task.subtasks.map((subtask) => (
                   <div
                     key={subtask.id}
-                    className="flex items-center gap-2 p-2 hover:bg-muted/50 rounded transition-colors"
+                    className="flex items-center gap-3 p-2 hover:bg-muted/50 rounded transition-colors"
                   >
                     <input
                       type="checkbox"
                       checked={subtask.completed}
-                      className="w-4 h-4 rounded border-gray-300"
+                      className="w-4 h-4 rounded border-gray-300 shrink-0"
                       readOnly
                     />
                     <span
-                      className={`text-sm flex-1 ${
+                      className={`text-sm flex-1 min-w-0 break-words ${
                         subtask.completed ? 'line-through text-muted-foreground' : ''
                       }`}
                     >
@@ -129,15 +129,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
                 ))}
 
                 {/* Add Subtask */}
-                <div className="flex items-center gap-2 mt-2">
+                <div className="flex items-center gap-2 mt-3">
                   <Input
                     placeholder="Add a subtask..."
                     value={newSubtask}
                     onChange={(e) => setNewSubtask(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && handleAddSubtask()}
-                    className="text-sm"
+                    className="text-sm flex-1 min-w-0"
                   />
-                  <Button size="sm" onClick={handleAddSubtask}>
+                  <Button size="sm" onClick={handleAddSubtask} className="shrink-0">
                     <Plus className="w-4 h-4" />
                   </Button>
                 </div>
@@ -145,15 +145,15 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
             </div>
 
             {/* Comments - Velt Inline Comments */}
-            <div id={`task-modal-comments-${task.id}`}>
+            <div id={`task-comments-${task.id}`} className="min-w-0">
               <label className="text-sm font-medium text-muted-foreground mb-3 flex items-center gap-2">
-                <MessageSquare className="w-4 h-4" />
+                <MessageSquare className="w-4 h-4 shrink-0" />
                 Comments
               </label>
-              
-              <div className="bg-muted/30 rounded-lg p-4 min-h-[150px]">
+
+              <div className="bg-muted/30 rounded-lg p-4 min-h-[150px] overflow-hidden">
                 <VeltInlineCommentsSection
-                  targetElementId={`task-modal-comments-${task.id}`}
+                  targetElementId={`task-card-${task.id}`}
                   multiThread={true}
                 />
               </div>
@@ -161,7 +161,7 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
           </div>
 
           {/* Right Column - Properties */}
-          <div className="space-y-4">
+          <div className="space-y-4 order-1 lg:order-2 lg:border-l lg:border-border lg:pl-6">
             {/* Status */}
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-2 block">
@@ -248,17 +248,17 @@ export const TaskModal: React.FC<TaskModalProps> = ({ task, open, onClose }) => 
             {/* Tags */}
             <div>
               <label className="text-xs font-medium text-muted-foreground mb-2 block flex items-center gap-1">
-                <Tag className="w-3 h-3" />
+                <Tag className="w-3 h-3 shrink-0" />
                 TAGS
               </label>
-              <div className="flex flex-wrap gap-1">
+              <div className="flex flex-wrap gap-2">
                 {task.tags.map((tag) => (
                   <Badge key={tag} variant="secondary" className="text-xs">
                     {tag}
-                    <X className="w-3 h-3 ml-1 cursor-pointer hover:text-destructive" />
+                    <X className="w-3 h-3 ml-1 cursor-pointer hover:text-destructive shrink-0" />
                   </Badge>
                 ))}
-                <Button variant="outline" size="sm" className="h-6 px-2">
+                <Button variant="outline" size="sm" className="h-6 px-2 shrink-0">
                   <Plus className="w-3 h-3" />
                 </Button>
               </div>
