@@ -33,7 +33,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
       onClick={onClick}
       id={`task-card-${task.id}`}
       data-velt-target-comment-element-id={`task-card-${task.id}`}
-      className="bg-white dark:bg-gray-700 border border-border dark:border-gray-600 rounded-lg p-4 hover:shadow-md transition-all cursor-pointer group relative"
+      className="bg-white dark:bg-gray-700 border border-border dark:border-gray-600 rounded-md p-4 hover:shadow-md transition-all cursor-pointer group relative"
     >
       {/* Comment Bubble - shows when task has comments (single visual) */}
       {/* <div
