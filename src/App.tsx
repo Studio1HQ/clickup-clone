@@ -46,7 +46,7 @@ function AppContentInner() {
       {currentView !== 'document' && (
         <VeltComments
           popoverMode={true}
-          popoverTriangleComponent={true}
+          popoverTriangleComponent={false}
           darkMode={isDarkMode}
         />
       )}

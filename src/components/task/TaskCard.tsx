@@ -1,9 +1,9 @@
 import React from 'react';
 import { Task } from '@/types';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Calendar, CheckCircle2, Circle } from 'lucide-react';
 import { format } from 'date-fns';
+import { VeltCommentBubble } from '@veltdev/react';
 
 interface TaskCardProps {
   task: Task;
@@ -35,16 +35,6 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
       data-velt-target-comment-element-id={`task-card-${task.id}`}
       className="bg-white dark:bg-gray-700 border border-border dark:border-gray-600 rounded-md p-4 hover:shadow-md transition-all cursor-pointer group relative"
     >
-      {/* Comment Bubble - shows when task has comments (single visual) */}
-      {/* <div
-        className="absolute top-2 right-2 z-10"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <VeltCommentBubble
-          targetElementId={`task-card-${task.id}`}
-          commentCountType="total"
-        />
-      </div> */}
       
       {/* Status & Title */}
       <div className="flex items-start gap-3 mb-3">
@@ -102,15 +92,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
           )}
         </div>
 
-        {/* Assignee */}
-        {task.assignee && (
-          <Avatar className="w-6 h-6">
-            <AvatarImage src={task.assignee.avatar} alt={task.assignee.name} />
-            <AvatarFallback className="text-xs">
-              {task.assignee.name.charAt(0)}
-            </AvatarFallback>
-          </Avatar>
-        )}
+        {/* Comment Bubble */}
+        <div onClick={(e) => e.stopPropagation()}>
+          <VeltCommentBubble
+            targetElementId={`task-card-${task.id}`}
+            commentCountType="total"
+          />
+        </div>
       </div>
     </div>
   );
