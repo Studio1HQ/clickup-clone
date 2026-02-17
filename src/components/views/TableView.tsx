@@ -20,7 +20,7 @@ import {
 } from '@/components/ui/select';
 import { ArrowUpDown, CheckCircle2, Circle } from 'lucide-react';
 import { format } from 'date-fns';
-import { VeltCommentTool } from '@veltdev/react';
+import { VeltCommentBubble, VeltCommentTool } from '@veltdev/react';
 
 const priorityColors: Record<TaskPriority, string> = {
   urgent: 'bg-red-100 text-red-700 border-red-200',
@@ -130,14 +130,12 @@ export const TableView: React.FC = () => {
               value={task.priority}
               onValueChange={(value) => updateTaskPriority(task.id, value as TaskPriority)}
             >
-              <SelectTrigger className="w-[100px] h-8 border-0 hover:bg-muted/50">
-                <SelectValue>
-                  <Badge variant="outline" className={`${priorityColors[task.priority]} text-xs capitalize`}>
-                    {task.priority}
-                  </Badge>
-                </SelectValue>
+              <SelectTrigger className="w-[120px] h-9 border hover:bg-muted/50">
+                <Badge variant="outline" className={`${priorityColors[task.priority]} text-xs capitalize`}>
+                  {task.priority}
+                </Badge>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="z-50">
                 {(['urgent', 'high', 'medium', 'low'] as TaskPriority[]).map((priority) => (
                   <SelectItem key={priority} value={priority}>
                     <Badge variant="outline" className={`${priorityColors[priority]} capitalize`}>
@@ -237,22 +235,12 @@ export const TableView: React.FC = () => {
         cell: ({ row }) => {
           const task = row.original;
           return (
-            <div
-              className="absolute inset-0 flex items-center px-4"
-              id={`task-card-${task.id}`}
-              data-velt-target-comment-element-id={`task-card-${task.id}`}
-            >
-              <div onClick={(e) => e.stopPropagation()}>
-                <VeltCommentTool
-                  targetElementId={`task-card-${task.id}`}
-                  context={{
-                    taskId: task.id,
-                    taskTitle: task.title,
-                    projectId: task.projectId,
-                    view: 'table',
-                  }}
-                />
-              </div>
+            <div onClick={(e) => e.stopPropagation()} className="flex items-center gap-2">
+              <VeltCommentTool targetElementId={`task-card-${task.id}`} />
+              <VeltCommentBubble
+                targetElementId={`task-card-${task.id}`}
+                commentCountType="total"
+              />
             </div>
           );
         },
@@ -274,7 +262,7 @@ export const TableView: React.FC = () => {
 
   return (
     <div className="h-full overflow-auto p-6">
-      <div className="bg-white dark:bg-gray-800 rounded-lg border border-border dark:border-gray-700 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-border dark:border-gray-700">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead className="bg-muted/50 dark:bg-gray-900/50 border-b border-border dark:border-gray-700">
@@ -297,12 +285,14 @@ export const TableView: React.FC = () => {
               {table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
+                  id={`task-card-${row.original.id}`}
+                  data-velt-target-comment-element-id={`task-card-${row.original.id}`}
                   className="hover:bg-muted/30 dark:hover:bg-gray-700/30 transition-colors cursor-pointer"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className={`px-4 py-3 text-sm ${cell.column.id === 'comments' ? 'relative' : ''}`}
+                      className="px-4 py-3 text-sm"
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </td>
